@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from 'react';
 import Image from 'next/image';
 
@@ -108,15 +107,18 @@ export default function Home() {
         {/* 管理员存储区域 */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">管理员歌曲存储</h2>
-          {/* 添加搜索框 */}
-          <div className="mb-4">
+          
+          {/* 搜索UI */}
+          <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-800">
+            <h3 className="text-lg font-medium mb-2 text-gray-800 dark:text-gray-200">用户ID搜索</h3>
             <input
               type="text"
               value={searchUserId}
               onChange={(e) => setSearchUserId(e.target.value)}
-              placeholder="输入用户ID搜索"
+              placeholder="输入用户ID查找存储记录"
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">输入用户ID可筛选该用户存储的所有歌曲</p>
           </div>
 
           <form onSubmit={storeSong} className="space-y-4">
@@ -144,7 +146,7 @@ export default function Home() {
             </button>
           </form>
 
-          {/* 存储记录显示 - 添加搜索过滤 */}
+          {/* 存储记录显示 */}
           {storedSongs.length > 0 && (
             <div className="mt-6">
               <h3 className="text-lg font-medium mb-2 text-gray-700 dark:text-gray-300">
@@ -152,13 +154,21 @@ export default function Home() {
               </h3>
               <div className="overflow-x-auto">
                 <table className="min-w-full bg-white dark:bg-gray-700">
-                  // ... existing code ...
+                  <thead>
+                    <tr className="bg-gray-100 dark:bg-gray-600">
+                      <th className="py-2 px-4 border-b border-gray-200 dark:border-gray-500 text-left text-sm font-medium text-gray-700 dark:text-gray-200">用户ID</th>
+                      <th className="py-2 px-4 border-b border-gray-200 dark:border-gray-500 text-left text-sm font-medium text-gray-700 dark:text-gray-200">歌曲名称</th>
+                      <th className="py-2 px-4 border-b border-gray-200 dark:border-gray-500 text-left text-sm font-medium text-gray-700 dark:text-gray-200">存储时间</th>
+                    </tr>
+                  </thead>
                   <tbody>
                     {storedSongs
                       .filter(song => !searchUserId || song.userId === searchUserId)
                       .map((song, index) => (
                         <tr key={index} className={index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-800' : 'bg-white dark:bg-gray-700'}>
-                          // ... existing code ...
+                          <td className="py-2 px-4 border-b border-gray-200 dark:border-gray-500 text-sm text-gray-800 dark:text-gray-200">{song.userId}</td>
+                          <td className="py-2 px-4 border-b border-gray-200 dark:border-gray-500 text-sm text-gray-800 dark:text-gray-200">{song.name}</td>
+                          <td className="py-2 px-4 border-b border-gray-200 dark:border-gray-500 text-sm text-gray-800 dark:text-gray-200">{song.time}</td>
                         </tr>
                       ))}
                   </tbody>
